@@ -1,1 +1,1 @@
-# Home Sweet Home
+# An interactive map to assist users in finding nearby restrooms
