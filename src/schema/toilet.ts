@@ -88,6 +88,12 @@ class Toilet {
 
 @Resolver()
 export class ToiletResolver {
+
+    @Query((_returns) => Toilet, { nullable: true })
+    async toilet(@Arg("id") id: string, @Ctx() ctx: Context) {
+        return await ctx.prisma.toilet.findOne({ where: { id: parseInt(id, 10) } });
+    }
+
     @Authorized()
     @Mutation((_returns) => Toilet, { nullable: true })
     async createToilet(
