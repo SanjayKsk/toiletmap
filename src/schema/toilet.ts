@@ -123,6 +123,17 @@ export class ToiletResolver {
         return await ctx.prisma.toilet.findOne({ where: { id: parseInt(id, 10) } });
     }
 
+    @Query(_returns => [Toilet], { nullable: false })
+    async toilets(@Arg("bounds") bounds: BoundsInput, @Ctx() ctx: Context) {
+        return ctx.prisma.toilet.findMany({
+            where: {
+                latitude: { gte: bounds.sw.latitude, lte: bounds.ne.latitude },
+                longitude: { gte: bounds.sw.longitude, lte: bounds.ne.longitude },
+            },
+            take: 50,
+        })
+    }
+
     @Authorized()
     @Mutation((_returns) => Toilet, { nullable: true })
     async createToilet(
@@ -139,17 +150,6 @@ export class ToiletResolver {
                 handicap: input.handicap,
                 baby: input.baby,
             }
-        })
-    }
-
-    @Query(_returns => [Toilet], { nullable: false })
-    async toilets(@Arg("bounds") bounds: BoundsInput, @Ctx() ctx: Context) {
-        return ctx.prisma.toilet.findMany({
-            where: {
-                latitude: { gte: bounds.sw.latitude, lte: bounds.ne.latitude },
-                longitude: { gte: bounds.sw.longitude, lte: bounds.ne.longitude },
-            },
-            take: 50,
         })
     }
 }

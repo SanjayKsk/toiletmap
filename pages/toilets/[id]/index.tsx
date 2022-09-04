@@ -61,8 +61,8 @@ function ToiletData({id}: {id: string}) {
             secure
             dpr="auto"
             quality="auto"
-            width={900}
-            height={Math.floor((9 / 16) * 900)}
+            width={800}
+            height={Math.floor((9 / 16) * 1200)}
             crop="fill"
             gravity="auto"
           />
