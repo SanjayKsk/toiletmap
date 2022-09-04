@@ -30,6 +30,15 @@ class CoordinatesInput {
 }
 
 @InputType()
+class BoundsInput{
+    @Field(_type => CoordinatesInput)
+    sw!: CoordinatesInput;
+
+    @Field(_type => CoordinatesInput)
+    ne!: CoordinatesInput;
+}
+
+@InputType()
 class ToiletInput {
     @Field((_type) => String)
     address!: string;
@@ -130,6 +139,17 @@ export class ToiletResolver {
                 handicap: input.handicap,
                 baby: input.baby,
             }
+        })
+    }
+
+    @Query(_returns => [Toilet], { nullable: false })
+    async toilets(@Arg("bounds") bounds: BoundsInput, @Ctx() ctx: Context) {
+        return ctx.prisma.toilet.findMany({
+            where: {
+                latitude: { gte: bounds.sw.latitude, lte: bounds.ne.latitude },
+                longitude: { gte: bounds.sw.longitude, lte: bounds.ne.longitude },
+            },
+            take: 50,
         })
     }
 }

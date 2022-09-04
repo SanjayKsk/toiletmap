@@ -30,7 +30,7 @@ export default function Map({setDataBounds}: IProps) {
                 mapboxApiAccessToken={process.env.NEXT_PUBLIC_MAPBOX_API_TOKEN}
                 onViewportChange={nextViewport => setViewport(nextViewport)}
                 ref={(instance) => (mapRef.current = instance)}
-                minZoom={12}
+                minZoom={11}
                 maxZoom={17}
                 mapStyle="mapbox://styles/sanjayk98/cl7kgsq4i004x14p4h2yowhmc"
                 onLoad={() => {
