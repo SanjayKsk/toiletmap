@@ -3,7 +3,7 @@ import { Image } from "cloudinary-react";
 import { useQuery, gql } from "@apollo/client";
 import Layout from "src/components/layout";
 // import HouseNav from "src/components/houseNav";
-// import SingleMap from "src/components/singleMap";
+import SingleMap from "src/components/singleMap";
 import {
   ShowToiletQuery,
   ShowToiletQueryVariables,
@@ -69,7 +69,7 @@ function ToiletData({id}: {id: string}) {
             <p className="text-2xl mt-4 w-1/2">Baby Changing Station: {toilet.baby ? "Yes" : "No"}</p>
           </div>
         </div>
-        <div className="sm:w-full md:w-1/2">SingleMap</div>
+        <div className="sm:w-full md:w-1/2"><SingleMap toilet={toilet}/></div>
       </div>
       } 
     />
