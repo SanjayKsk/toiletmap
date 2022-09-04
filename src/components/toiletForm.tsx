@@ -1,14 +1,14 @@
 import { useState, useEffect, ChangeEvent } from "react";
 import { useForm } from "react-hook-form";
 import { useMutation, gql } from "@apollo/client";
-// import { useRouter } from "next/router";
+import router, { useRouter } from "next/router";
 import Link from "next/link";
 // import { Image } from "cloudinary-react";
 import { SearchBox } from "./searchBox";
-// import {
-//   CreateHouseMutation,
-//   CreateHouseMutationVariables,
-// } from "src/generated/CreateHouseMutation";
+import {
+  CreateToiletMutation,
+  CreateToiletMutationVariables,
+} from "src/generated/CreateToiletMutation";
 // import {
 //   UpdateHouseMutation,
 //   UpdateHouseMutationVariables,
@@ -22,6 +22,14 @@ const SIGNATURE_MUTATION = gql`
         timestamp
         }
     }
+`;
+
+const CREATE_TOILET_MUTATION = gql`
+  mutation CreateToiletMutation($input: ToiletInput!) {
+   createToilet(input: $input) {
+        id
+    } 
+  }
 `;
 
 interface UploadImageResponse {
@@ -48,22 +56,24 @@ interface IFormData {
     address: string;
     latitude: number;
     longitude: number;
-    rating: number;
-    handicapped: boolean;
-    familyRoom: boolean;
+    rating: string;
+    handicap: boolean;
+    baby: boolean;
     image: FileList;
 }
 
 interface IProps {}
 
 export default function ToiletForm({}: IProps){
+    const router = useRouter();
     const [submitting, setSubmitting] = useState(false);
     const [previewImage, setPreviewImage] = useState<string>();
     const {register, handleSubmit, setValue, errors, watch} = useForm<IFormData>({ defaultValues: {}});
 
     const address = watch("address");
-    const [createSignature] = useMutation<CreateSignatureMutation>(SIGNATURE_MUTATION)
-
+    const [createSignature] = useMutation<CreateSignatureMutation>(SIGNATURE_MUTATION);
+    const [createToilet] = useMutation<CreateToiletMutation, CreateToiletMutationVariables>(CREATE_TOILET_MUTATION);
+    
 
     useEffect(() => {
         register({name: "address"}, {required: "Please enter an address"});
@@ -78,12 +88,32 @@ export default function ToiletForm({}: IProps){
         if (signatureData){
             const {signature, timestamp} = signatureData.createImageSignature;
             const imageData = await uploadImage(data.image[0], signature, timestamp);
-            const imageUrl = imageData.secure_url;
+            
+            const {data: toiletData} = await createToilet({
+                variables: {
+                    input: {
+                        address: data.address,
+                        image: imageData.secure_url,
+                        coordinates: {
+                            latitude: data.latitude,
+                            longitude: data.longitude,
+                        },
+                        rating: parseFloat(data.rating),
+                        handicap: data.handicap,
+                        baby: data.baby,
+                    }
+                }
+            });
+
+            if(toiletData?.createToilet){
+                console.log
+                router.push(`/toilets/${toiletData.createToilet.id}`);
+            } 
         }
     };
 
     const onSubmit = (data: IFormData) => {
-        setSubmitting(true);
+        setSubmitting(false);
         handleCreate(data);
     };
 
@@ -160,13 +190,13 @@ export default function ToiletForm({}: IProps){
         </div>
         <div className="flex space-x-4">
             <div className="mt-4 w-1/2">
-                <label htmlFor="handicapped" className="block">Handicapped Accessible?</label>
-                <input id="handicapped" name="handicapped" type="checkbox" className="p-2" ref={register} />
+                <label htmlFor="handicap" className="block">Handicapped Accessible?</label>
+                <input id="handicap" name="handicap" type="checkbox" className="p-2" ref={register} />
             </div>
 
             <div className="mt-4 w-1/2">
-                <label htmlFor="familyRoom" className="block">Baby changing facilities available?</label>
-                <input id="familyRoom" name="familyRoom" type="checkbox" className="p-2" ref={register} />
+                <label htmlFor="baby" className="block">Baby changing facilities available?</label>
+                <input id="baby" name="baby" type="checkbox" className="p-2" ref={register} />
             </div>
         </div>
 

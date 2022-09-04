@@ -3,7 +3,7 @@
 
 datasource db {
   provider = "postgresql"
-  url      = env("DATABASE_URL")
+  url = "***"
 }
 
 generator client {
@@ -19,7 +19,7 @@ model Toilet {
   address String
   rating Float
   handicap Boolean @default(false)
-  baby Boolean @default(false)
+  babyroom Boolean @default(false)
   createdAt DateTime @default(now()) @map(name: "created_at")
   updatedAt DateTime @default(now()) @map(name: "updated_at")
   
