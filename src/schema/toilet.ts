@@ -53,7 +53,7 @@ class ToiletInput {
 @ObjectType()
 class Toilet {
     @Field((_type) => ID)
-    id!: string;
+    id!: number;
 
     @Field((_type) => String)
     userId!: string;
@@ -84,6 +84,26 @@ class Toilet {
 
     @Field((_type) => Boolean)
     baby!: boolean;
+
+    @Field(_type => [Toilet])
+    async nearby(@Ctx() ctx: Context) {
+        const bounds = getBoundsOfDistance(
+            {
+                latitude: this.latitude,
+                longitude: this.longitude,
+            },
+            2000
+        );
+
+        return ctx.prisma.toilet.findMany({
+            where: {
+                latitude: { gte: bounds[0].latitude, lte: bounds[1].latitude },
+                longitude: { gte: bounds[0].longitude, lte: bounds[1].longitude },
+                id: {not: {equals: this.id}},
+            },
+            take: 20,
+        });
+    }
 }
 
 @Resolver()

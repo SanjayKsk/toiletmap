@@ -12,9 +12,10 @@ interface IToilet {
 
 interface IProps {
     toilet: IToilet
+    nearby: IToilet[];
 }
 
-export default function SingleMap({toilet}: IProps) {
+export default function SingleMap({toilet, nearby}: IProps) {
     const [viewport, setViewport] = useState({
         latitude: toilet.latitude,
         longitude: toilet.longitude,
@@ -47,6 +48,22 @@ export default function SingleMap({toilet}: IProps) {
                         <img src="/toilet-color.svg" className="w-6" alt="selected toilet" />
                     </button>
                 </Marker>
+
+                {nearby.map(nearHouse => (
+                <Marker 
+                    key={nearHouse.id}
+                    latitude={nearHouse.latitude}
+                    longitude={nearHouse.longitude}
+                    offsetLeft={-20}
+                    offsetTop= {-20}  
+                >
+                    <Link href={`/toilets/${nearHouse.id}`}>
+                        <a style={{width: "30px", height: "30px", fontSize: "30px"}}>
+                            <img src="/toilet-solid.svg.svg" className="w-6" alt="nearby toilet" />
+                        </a>
+                    </Link>
+                </Marker>
+                ))}
             </ReactMapGL>
         </div>
     )

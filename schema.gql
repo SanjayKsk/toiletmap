@@ -31,6 +31,7 @@ type Toilet {
   image: String!
   latitude: Float!
   longitude: Float!
+  nearby: [Toilet!]!
   publicId: String!
   rating: Float!
   userId: String!

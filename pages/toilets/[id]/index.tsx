@@ -22,6 +22,11 @@ const SHOW_TOILET_QUERY = gql`
       rating
       handicap
       baby
+      nearby {
+        id
+        latitude
+        longitude
+      }
     }
   }
 `;
@@ -69,7 +74,7 @@ function ToiletData({id}: {id: string}) {
             <p className="text-2xl mt-4 w-1/2">Baby Changing Station: {toilet.baby ? "Yes" : "No"}</p>
           </div>
         </div>
-        <div className="sm:w-full md:w-1/2"><SingleMap toilet={toilet}/></div>
+        <div className="sm:w-full md:w-1/2"><SingleMap toilet={toilet} nearby={toilet.nearby}/></div>
       </div>
       } 
     />
