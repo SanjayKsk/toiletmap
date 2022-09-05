@@ -72,7 +72,7 @@ export default function Home() {
           <div className="w-1/2">
             <Map 
               setDataBounds={setDataBounds} 
-              toilets={lastData ? lastData.toilets : []}
+               toilets={lastData ? lastData.toilets : []}
               highlightedId={highlightedId}
             />
           </div>

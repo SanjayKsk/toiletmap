@@ -13,7 +13,7 @@ interface IProps {
     highlightedId: string | null;
 }
 
-export default function Map({setDataBounds, toilets, highlightedId}: IProps) {
+export default function Map({setDataBounds, toilets,highlightedId}: IProps) {
     const [selected, setSelected] = useState<ToiletsQuery_toilets | null>(null);
     //reference to the map
     const mapRef = useRef<ReactMapGL | null>(null);
@@ -49,7 +49,7 @@ export default function Map({setDataBounds, toilets, highlightedId}: IProps) {
                     }
                 }}    
             >
-                {/* <div className="absolute top-0 w-full z-10 p-4">
+                <div className="absolute top-0 w-full z-10 p-4">
                     <SearchBox 
                         defaultValue=""
                         onSelectAddress={(_address, latitude, longitude) => {
@@ -68,7 +68,7 @@ export default function Map({setDataBounds, toilets, highlightedId}: IProps) {
                         }
                     }
                     />
-                </div> */}
+                </div>
 
                 {toilets.map(toilet => (
                     <Marker 
