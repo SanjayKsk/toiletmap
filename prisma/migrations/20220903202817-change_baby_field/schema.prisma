@@ -1,0 +1,30 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url = "***"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Toilet {
+  id Int @id @default(autoincrement())
+  userId String
+  image String
+  latitude Float
+  longitude Float
+  address String
+  rating Float
+  handicap Boolean @default(false)
+  baby Boolean @default(false)
+  createdAt DateTime @default(now()) @map(name: "created_at")
+  updatedAt DateTime @default(now()) @map(name: "updated_at")
+  
+  @@index([userId], name: "toilets.userId")
+
+  @@map(name: "toilets")
+
+}
