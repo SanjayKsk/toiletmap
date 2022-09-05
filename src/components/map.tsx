@@ -49,7 +49,7 @@ export default function Map({setDataBounds, toilets, highlightedId}: IProps) {
                     }
                 }}    
             >
-                <div className="absolute top-0 w-full z-10 p-4">
+                {/* <div className="absolute top-0 w-full z-10 p-4">
                     <SearchBox 
                         defaultValue=""
                         onSelectAddress={(_address, latitude, longitude) => {
@@ -68,7 +68,7 @@ export default function Map({setDataBounds, toilets, highlightedId}: IProps) {
                         }
                     }
                     />
-                </div>
+                </div> */}
 
                 {toilets.map(toilet => (
                     <Marker 
